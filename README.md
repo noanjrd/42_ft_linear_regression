@@ -1,6 +1,6 @@
 # ft_linear_regression
 
-A simple linear regression implementation from scratch to predict car prices based on their mileage (kilometers). This project uses Gradient Descent for optimization and normalization for better performance.
+A linear regression implementation from scratch to predict car prices based on their mileage (kilometers). This project uses Gradient Descent for optimization and normalization for better performance.
 
 ## Project Overview
 
