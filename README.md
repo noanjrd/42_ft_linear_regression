@@ -32,23 +32,31 @@ The goal of this project is to implement a linear regression model that finds th
 
 ## Usage
 
-To run the program and predict a price:
-
+### 1. Train the model
+Before making predictions, you need to train the model using the dataset:
 ```bash
-python main.py [mileage]
+python train_model.py
+```
+This will generate `thetas.json` with the optimized parameters.
+
+### 2. Predict a price
+Run the prediction script with a mileage value:
+```bash
+python estimate_price.py [mileage]
 ```
 
 Example:
 ```bash
-python main.py 150000
+python estimate_price.py 150000
 ```
 
 ## Project Structure
 
-- `main.py`: Entry point. Handles arguments, data loading, and starts the process.
-- `train_model.py`: Core logic for normalization, gradient descent, and training.
-- `measure_precision.py`: Calculates RMSE and R² metrics to evaluate the model.
+- `train_model.py`: Core logic for normalization and gradient descent. Saves results to `thetas.json`.
+- `estimate_price.py`: Main entry point for predictions. Loads parameters and displays a visualization.
+- `measure_precision.py`: Calculates RMSE and R² metrics to evaluate the model performance.
 - `data.csv`: The dataset containing mileage (`km`) and price (`price`).
+- `thetas.json`: Stores the calculated $\theta_0$ and $\theta_1$.
 
 ## References & Resources
 

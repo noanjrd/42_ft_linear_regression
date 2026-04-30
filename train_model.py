@@ -1,5 +1,6 @@
 import pandas as pd
-
+import json
+import sys
 
 def estimatedPrice(theta_0, theta_1, mileage):
     """
@@ -62,14 +63,26 @@ def calculate_slop_of_MSE_theta0(theta0, theta1, min_km, max_km, data: pd.DataFr
         index += 1
     return (1 / index) * summ
 
-
-def start_prediction(data: pd.DataFrame, input_value):
+def save_thetas(theta0, theta1):
     """
-    Trains the linear regression model using gradient descent and predicts the price for a given mileage.
+    Saves trained model parameters to the JSON file.
+
+    Args:
+        theta0 (float): Trained y-intercept.
+        theta1 (float): Trained slope.
+    """
+    data = {
+        "theta0" : theta0,
+        "theta1" : theta1}
+    with open("thetas.json", "w") as f:
+        json.dump(data,f, indent=4)
+
+def start_training(data: pd.DataFrame):
+    """
+    Trains the linear regression model using gradient descent.
 
     Args:
         data (pd.DataFrame): The dataset containing 'km' and 'price'.
-        input_value (int): The mileage value to predict the price for.
     """
     theta_0 = 0
     theta_1 = 0
@@ -82,11 +95,29 @@ def start_prediction(data: pd.DataFrame, input_value):
         res_derivative_MSE_theta0 = calculate_slop_of_MSE_theta0(theta_0, theta_1, min_km, max_km, data)
         theta_0 = theta_0 - (learning_rate * res_derivative_MSE_theta0)
         theta_1 = theta_1 - (learning_rate * res_derivative_MSE_theta1)
-
-    x = (input_value - min_km) / (max_km - min_km)
-    estimated_price_result = estimatedPrice(theta_0, theta_1, x)
-    print(f"The estimated price : {estimated_price_result:.4f}")
-    from measure_precision import get_precision
-    get_precision(theta_0, theta_1, min_km, max_km, data)
-    from main import display_info
-    display_info(data, theta_0, theta_1, min_km, max_km)
+    save_thetas(theta_0, theta_1)
+    
+    
+def main():
+    """
+    Main entry point of the program. 
+    Parses command-line arguments to trigger price prediction based on mileage.
+    """
+    argv = sys.argv
+    try:
+        data = pd.read_csv("data.csv")
+        start_training(data)
+    except AssertionError as e:
+        print(e)
+        exit(1)
+    except Exception as e:
+        print("Error :", e)
+        exit(1)
+    except KeyboardInterrupt:
+        print("Progam interupted")
+        exit(1)
+    return
+    
+if __name__ == "__main__":
+    main()
+    

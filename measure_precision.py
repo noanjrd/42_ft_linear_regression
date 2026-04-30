@@ -10,6 +10,9 @@ def calculate_R2(sum_of_error, data: pd.DataFrame):
     Args:
         sum_of_error (float): The Sum of Squared Errors (RSS).
         data (pd.DataFrame): The dataset used for calculating the Total Sum of Squares (SST).
+
+    Returns:
+        None: The function prints the R2 score.
     """
     mean = data['price'].mean()
     summ = 0
