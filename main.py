@@ -42,7 +42,7 @@ def main():
         print(e)
         exit(1)
     except Exception as e:
-        print(e)
+        print("Error :", e)
         exit(1)
     except KeyboardInterrupt:
         print("Progam interupted")

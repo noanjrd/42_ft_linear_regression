@@ -78,10 +78,10 @@ def start_prediction(data: pd.DataFrame, input_value):
     learning_rate = 0.1
     round = 1000
     for _ in range(round):
-        MSE_theta1 = calculate_slop_of_MSE_theta1(theta_0, theta_1, min_km, max_km, data)
-        MSE_theta0 = calculate_slop_of_MSE_theta0(theta_0, theta_1, min_km, max_km, data)
-        theta_0 = theta_0 - (learning_rate * MSE_theta0)
-        theta_1 = theta_1 - (learning_rate * MSE_theta1)
+        res_derivative_MSE_theta1 = calculate_slop_of_MSE_theta1(theta_0, theta_1, min_km, max_km, data)
+        res_derivative_MSE_theta0 = calculate_slop_of_MSE_theta0(theta_0, theta_1, min_km, max_km, data)
+        theta_0 = theta_0 - (learning_rate * res_derivative_MSE_theta0)
+        theta_1 = theta_1 - (learning_rate * res_derivative_MSE_theta1)
 
     x = (input_value - min_km) / (max_km - min_km)
     estimated_price_result = estimatedPrice(theta_0, theta_1, x)

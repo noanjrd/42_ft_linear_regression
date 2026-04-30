@@ -2,7 +2,7 @@
 
 A linear regression implementation from scratch to predict car prices based on their mileage (kilometers). This project uses Gradient Descent for optimization and normalization for better performance.
 
-## Project Overview
+## Project Overview 
 
 The goal of this project is to implement a linear regression model that finds the relationship between a car's mileage and its price. The model is trained using a dataset (`data.csv`) and can then predict prices for any user-provided mileage.
 

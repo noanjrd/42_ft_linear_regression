@@ -40,4 +40,3 @@ def get_precision(theta0, theta1, min_km, max_km, data: pd.DataFrame):
     calculate_R2(sum_of_error, data)
     sum_of_error /= index
     print(f"The precision using RMSE : {sqrt(sum_of_error):.4f}")
-    # It's the standard deviation of the MSE
