@@ -1,6 +1,6 @@
 import pandas as pd
 import json
-import sys
+
 
 def estimatedPrice(theta_0, theta_1, mileage):
     """
@@ -63,6 +63,7 @@ def calculate_slop_of_MSE_theta0(theta0, theta1, min_km, max_km, data: pd.DataFr
         index += 1
     return (1 / index) * summ
 
+
 def save_thetas(theta0, theta1):
     """
     Saves trained model parameters to the JSON file.
@@ -72,10 +73,11 @@ def save_thetas(theta0, theta1):
         theta1 (float): Trained slope.
     """
     data = {
-        "theta0" : theta0,
-        "theta1" : theta1}
+        "theta0": theta0,
+        "theta1": theta1}
     with open("thetas.json", "w") as f:
-        json.dump(data,f, indent=4)
+        json.dump(data, f, indent=4)
+
 
 def start_training(data: pd.DataFrame):
     """
@@ -96,14 +98,13 @@ def start_training(data: pd.DataFrame):
         theta_0 = theta_0 - (learning_rate * res_derivative_MSE_theta0)
         theta_1 = theta_1 - (learning_rate * res_derivative_MSE_theta1)
     save_thetas(theta_0, theta_1)
-    
-    
+
+
 def main():
     """
-    Main entry point of the program. 
+    Main entry point of the program.
     Parses command-line arguments to trigger price prediction based on mileage.
     """
-    argv = sys.argv
     try:
         data = pd.read_csv("data.csv")
         start_training(data)
@@ -117,7 +118,7 @@ def main():
         print("Progam interupted")
         exit(1)
     return
-    
+
+
 if __name__ == "__main__":
     main()
-    

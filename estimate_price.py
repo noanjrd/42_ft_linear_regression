@@ -1,9 +1,9 @@
-
 import matplotlib.pyplot as plt
 import json
 import numpy as np
 import pandas as pd
 import sys
+
 
 def display_info(data, theta0, theta1, min_km, max_km):
     """
@@ -27,6 +27,7 @@ def display_info(data, theta0, theta1, min_km, max_km):
     plt.legend()
     plt.show()
 
+
 def estimatedPrice(theta_0, theta_1, mileage):
     """
     Calculates the estimated price for a given normalized mileage.
@@ -40,6 +41,7 @@ def estimatedPrice(theta_0, theta_1, mileage):
         float: The predicted price.
     """
     return theta_0 + (theta_1 * mileage)
+
 
 def get_thetas():
     """
@@ -60,7 +62,8 @@ def get_thetas():
         theta1 = 0
         thetas_in_file = False
     return theta0, theta1, thetas_in_file
-    
+
+
 def predict_value(data, input_value):
     """
     Normalizes a mileage input and prints the predicted car price.
@@ -75,18 +78,20 @@ def predict_value(data, input_value):
     min_km = data['km'].min()
     max_km = data['km'].max()
     x = (input_value - min_km) / (max_km - min_km)
-    theta0, theta1 , thetas_in_file= get_thetas()
+    theta0, theta1, thetas_in_file = get_thetas()
     estimated_price_result = estimatedPrice(theta0, theta1, x)
+    if estimated_price_result < 0:
+        estimated_price_result = 0
     print(f"The estimated price : {estimated_price_result:.4f}")
     from measure_precision import get_precision
     if (thetas_in_file):
         get_precision(theta0, theta1, min_km, max_km, data)
         display_info(data, theta0, theta1, min_km, max_km)
-    
+
 
 def main():
     """
-    Main entry point of the program. 
+    Main entry point of the program.
     Parses command-line arguments to trigger price prediction based on mileage.
     """
     argv = sys.argv
