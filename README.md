@@ -24,33 +24,48 @@ The goal of this project is to implement a linear regression model that finds th
 
 ## Installation
 
-1. Clone the repository.
-2. Ensure you have the required Python packages installed:
+1. **Clone the repository**:
    ```bash
-   pip install pandas numpy matplotlib
+   git clone https://github.com/noanjrd/42_ft_linear_regression
+   cd 42_ft_linear_regression
+   ```
+
+2. **Set up a virtual environment (recommended)**:
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
    ```
 
 ## Usage
 
 ### 1. Train the model
-Before making predictions, you need to train the model using the dataset:
+Before making predictions, you need to train the model using the provided dataset. This iteratively updates the parameters using Gradient Descent:
 ```bash
-python train_model.py
+python3 train_model.py
 ```
-This will generate `thetas.json` with the optimized parameters.
+This will generate or update `thetas.json` with the optimized $\theta_0$ and $\theta_1$.
 
 ### 2. Predict a price
-Run the prediction script with a mileage value:
+Run the prediction script with a mileage value (km) to get an estimate:
 ```bash
-python estimate_price.py [mileage]
+python3 estimate_price.py [mileage]
 ```
 
 Example:
 ```bash
-python estimate_price.py 150000
+python3 estimate_price.py 150000
 ```
-
-## Project Structure
+This script will:
+1. Load the parameters from `thetas.json`.
+2. Normalize the input mileage.
+3. Display the estimated price.
+4. Calculate precision metrics (RMSE & $R^2$) if the model was trained.
+5. Display a plot of the data and the regression line.
 
 - `train_model.py`: Core logic for normalization and gradient descent. Saves results to `thetas.json`.
 - `estimate_price.py`: Main entry point for predictions. Loads parameters and displays a visualization.
