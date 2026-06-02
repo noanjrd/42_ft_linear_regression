@@ -2,6 +2,21 @@ import pandas as pd
 import json
 
 
+def save_thetas(theta0, theta1):
+    """
+    Saves trained model parameters to the JSON file.
+
+    Args:
+        theta0 (float): Trained y-intercept.
+        theta1 (float): Trained slope.
+    """
+    data = {
+        "theta0": theta0,
+        "theta1": theta1}
+    with open("thetas.json", "w") as f:
+        json.dump(data, f, indent=4)
+        
+
 def estimatedPrice(theta_0, theta_1, mileage):
     """
     Calculates the estimated price for a given normalized mileage.
@@ -31,13 +46,10 @@ def calculate_slop_of_MSE_theta1(theta0, theta1, min_km, max_km, data: pd.DataFr
     Returns:
         float: The gradient for theta1.
     """
-    index = 0
-    summ = 0
-    for row in data.itertuples(index=False):
-        x = (row.km - min_km) / (max_km - min_km)
-        summ += x * (estimatedPrice(theta0, theta1, x) - row.price)
-        index += 1
-    return (1 / index) * summ
+    
+    x = (data["km"]- min_km) / (max_km - min_km)
+    errors = x * (estimatedPrice(theta0, theta1, x) - data["price"])
+    return errors.mean()
     # In the real derivative, we write -2 and not 1
 
 
@@ -55,29 +67,9 @@ def calculate_slop_of_MSE_theta0(theta0, theta1, min_km, max_km, data: pd.DataFr
     Returns:
         float: The gradient for theta0.
     """
-    index = 0
-    summ = 0
-    for row in data.itertuples(index=False):
-        x = (row.km - min_km) / (max_km - min_km)
-        summ += estimatedPrice(theta0, theta1, x) - row.price
-        index += 1
-    return (1 / index) * summ
-
-
-def save_thetas(theta0, theta1):
-    """
-    Saves trained model parameters to the JSON file.
-
-    Args:
-        theta0 (float): Trained y-intercept.
-        theta1 (float): Trained slope.
-    """
-    data = {
-        "theta0": theta0,
-        "theta1": theta1}
-    with open("thetas.json", "w") as f:
-        json.dump(data, f, indent=4)
-
+    x = (data["km"] - min_km)/(max_km - min_km)
+    errors = estimatedPrice(theta0, theta1, x) - data["price"]
+    return errors.mean()
 
 def start_training(data: pd.DataFrame):
     """
@@ -91,8 +83,8 @@ def start_training(data: pd.DataFrame):
     min_km = data['km'].min()
     max_km = data['km'].max()
     learning_rate = 0.1
-    round = 1000
-    for _ in range(round):
+    epoch = 1000
+    for _ in range(epoch):
         res_derivative_MSE_theta1 = calculate_slop_of_MSE_theta1(theta_0, theta_1, min_km, max_km, data)
         res_derivative_MSE_theta0 = calculate_slop_of_MSE_theta0(theta_0, theta_1, min_km, max_km, data)
         theta_0 = theta_0 - (learning_rate * res_derivative_MSE_theta0)
