@@ -17,18 +17,6 @@ def save_thetas(theta0, theta1):
 
 
 def estimatedPrice(theta_0, theta_1, mileage):
-    """Calculates the hypothesis value for a given mileage.
-
-    This function represents the linear regression model: h(x) = theta0 + theta1 * x.
-
-    Args:
-        theta_0 (float): The y-intercept (bias).
-        theta_1 (float): The slope (weight).
-        mileage (float): The normalized mileage value.
-
-    Returns:
-        float: The predicted price.
-    """
     return theta_0 + (theta_1 * mileage)
 
 

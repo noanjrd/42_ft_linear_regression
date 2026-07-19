@@ -29,17 +29,6 @@ def display_info(data, theta0, theta1, min_km, max_km):
 
 
 def estimatedPrice(theta_0, theta_1, mileage):
-    """
-    Calculates the estimated price for a given normalized mileage.
-
-    Args:
-        theta_0 (float): The y-intercept (bias).
-        theta_1 (float): The slope (weight).
-        mileage (float): The normalized mileage value.
-
-    Returns:
-        float: The predicted price.
-    """
     return theta_0 + (theta_1 * mileage)
 
 
@@ -57,7 +46,7 @@ def get_thetas():
         theta0 = data['theta0']
         theta1 = data['theta1']
         thetas_in_file = True
-    except:
+    except Exception:
         theta0 = 0
         theta1 = 0
         thetas_in_file = False
@@ -109,7 +98,6 @@ def main():
     except KeyboardInterrupt:
         print("Progam interupted")
         exit(1)
-    return
 
 
 if __name__ == "__main__":

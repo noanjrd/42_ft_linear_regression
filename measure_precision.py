@@ -3,7 +3,7 @@ import pandas as pd
 from math import sqrt
 
 
-def calculate_R2(sum_of_error, data: pd.DataFrame):
+def calculate_R2(sum_of_errors, data: pd.DataFrame):
     """
     Calculates the Coefficient of Determination (R²) score.
 
@@ -15,10 +15,8 @@ def calculate_R2(sum_of_error, data: pd.DataFrame):
         None: The function prints the R2 score.
     """
     mean = data['price'].mean()
-    summ = 0
-    for row in data.itertuples(index=False):
-        summ += ((row.price - mean) ** 2)
-    result_of_precision = 1 - (sum_of_error / summ)
+    summ = ((data['price'] - mean) ** 2).sum()
+    result_of_precision = 1 - (sum_of_errors / summ)
     print(f"The precision using R2 : {result_of_precision:.2f}")
     #  It's the Coefficient of Determination
 
@@ -34,12 +32,8 @@ def get_precision(theta0, theta1, min_km, max_km, data: pd.DataFrame):
         max_km (float): Max mileage for normalization.
         data (pd.DataFrame): The original dataset.
     """
-    index = 0
-    sum_of_error = 0
-    for row in data.itertuples(index=False):
-        x = (row.km - min_km) / (max_km - min_km)
-        sum_of_error += ((row.price - estimatedPrice(theta0, theta1, x)) ** 2)
-        index += 1
-    calculate_R2(sum_of_error, data)
-    sum_of_error /= index
-    print(f"The precision using RMSE : {sqrt(sum_of_error):.4f}")
+    data_normalized = data.copy()
+    data_normalized['km'] = (data_normalized['km'] - min_km) / (max_km - min_km)
+    squared_error = ((data_normalized['price'] - estimatedPrice(theta0, theta1, data_normalized['km'])) ** 2)
+    calculate_R2(squared_error.sum(), data)
+    print(f"The precision using RMSE : {sqrt(squared_error.mean()):.4f}")
